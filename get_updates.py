@@ -30,5 +30,5 @@ while True:
     last_id = update_last['update_id']
     time.sleep(0.5)
     
-# Get updates 
+# Get updates  
 
