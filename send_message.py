@@ -4,12 +4,7 @@ TOKEN = os.environ['TOKEN']
 URL = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
 
 
-chat_id = 86775091
-text = 'Hello, World!'
 
-# Send message
-response = requests.get(URL, params={'chat_id': chat_id, 'text': text})
-print(response.json())
 
 def send_message(chat_id: int, text: str):
     """
@@ -21,3 +16,8 @@ def send_message(chat_id: int, text: str):
     """
     response = requests.get(URL, params={'chat_id': chat_id, 'text': text})
     return response.json()
+
+chat_id = 86775091
+text = 'Hello, World!'
+
+send_message(chat_id, text)
