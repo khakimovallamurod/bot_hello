@@ -1,6 +1,13 @@
+
 import requests
 import os
 from pprint import pprint
+
+from openai import OpenAI
+
+# Get Open AI API key
+TOKEN_OPENAI = os.environ['TOKEN_OPENAI']
+# Get Telegram API key
 TOKEN = os.environ['TOKEN'] 
 
 def get_file(file_id: str):
@@ -31,16 +38,41 @@ def download_file(file_path: str):
     # Get file
     response = requests.get(URL)
     content = response.content
-    # Save file
-    with open(file_path, 'wb') as file:
-        file.write(content)
-    return True
+
+    
+    return content
+
+def speech_to_text(file_content: bytes):
+    """
+    Speech to text
+
+    Args:
+        file_content (bytes): file content
+
+    Returns:
+        str: text
+    """
+    client = OpenAI(api_key=TOKEN_OPENAI,base_url="https://api.lemonfox.ai/v1")
+    transcription = client.audio.transcriptions.create(
+
+        model='whisper-1',
+        file=file_content
+    ) 
+
+    return transcription
+
     
     
 
-file_id = 'AwACAgIAAxkBAAII72a27mYGItLQVnyTnL7J-a9WJy3fAAJSSwAC5D-4SU6Po_LmMx1sNQQ'
+file_id = ''
 
 
 file_path = get_file(file_id)['result']['file_path']
 print(file_path)
-pprint(download_file(file_path))
+
+file_content = download_file(file_path)
+text = speech_to_text(file_content)
+print(text)
+
+
+
