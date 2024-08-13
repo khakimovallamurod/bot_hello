@@ -1,12 +1,8 @@
-
 import requests
 import os
 
-from openai import OpenAI
-
-# Get Open AI API key
+url = "https://api.lemonfox.ai/v1/audio/transcriptions"
 TOKEN_OPENAI = os.environ['TOKEN_OPENAI']
-# Get Telegram API key
 TOKEN = os.environ['TOKEN'] 
 
 def get_file(file_id: str):
@@ -51,27 +47,24 @@ def speech_to_text(file_content: bytes):
     Returns:
         str: text
     """
-    client = OpenAI(api_key=TOKEN_OPENAI,base_url="https://api.lemonfox.ai/v1")
-    transcription = client.audio.transcriptions.create(
-
-        model='whisper-1',
-        file=file_content
-    ) 
-
-    return transcription
-
+    headers = {
+      "Authorization": TOKEN_OPENAI
+    }
     
+    data = {
+      "file": file_content,
+      "language": "english",
+      "response_format": "json"
+    }
+    files = {'file': file_content}
+    response = requests.post(url, headers=headers, files=files, data=data)
     
+    return response.json()
 
-file_id = 'AwACAgIAAxkBAAMkZrroTPLbDkbdYN9eMzH__Lt4QMkAAtRUAAKQ9sFJ4Eb1x3hMu-E1BA'
-
-
+file_id = 'AwACAgIAAxkBAAM8ZrsHqa92Wv4PNs0MnjbEyVYrg0MAAv9WAAL5C9hJnJpeeOq-Lao1BA'
 file_path = get_file(file_id)['result']['file_path']
-print(file_path)
-
 file_content = download_file(file_path)
-text = speech_to_text(file_content)
-print(text)
-
-
+# response = requests.post(url, headers=headers, data=data)
+# print(response.json())
+# print(speech_to_text())
 
