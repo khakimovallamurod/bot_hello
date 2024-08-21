@@ -61,10 +61,10 @@ def speech_to_text(file_content: bytes):
     
     return response.json()
 
-file_id = 'AwACAgIAAxkBAAM8ZrsHqa92Wv4PNs0MnjbEyVYrg0MAAv9WAAL5C9hJnJpeeOq-Lao1BA'
+file_id = 'AwACAgIAAxkBAANGZrsgXSoKBwvePX1sWA16JKZQ4CIAAv9WAAL5C9hJnJpeeOq-Lao1BA'
 file_path = get_file(file_id)['result']['file_path']
 file_content = download_file(file_path)
 # response = requests.post(url, headers=headers, data=data)
 # print(response.json())
-# print(speech_to_text())
+print(speech_to_text(file_content))
 

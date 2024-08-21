@@ -1,6 +1,5 @@
 import requests
 import os
-<<<<<<< HEAD
 import time
 TOKEN = os.environ['TOKEN'] 
 URL = f'https://api.telegram.org/bot{TOKEN}/sendDocument'
@@ -18,7 +17,6 @@ chat_id = '1383186462'
 file = open('dataset.csv', 'rb').read()
  
 print(send_document(chat_id, file))
-=======
 from pprint import pprint
 TOKEN = os.environ['TOKEN'] 
 
@@ -40,4 +38,3 @@ FILE_PATH = 'README.md'
 
 document = open(FILE_PATH, 'rb').read()
 pprint(send_document(chat_id, document))
->>>>>>> b86b87f7b661fd43db0664a2929e9c67f447821c

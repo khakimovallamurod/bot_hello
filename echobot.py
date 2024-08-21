@@ -29,7 +29,30 @@ def get_from_send_message(chat_id: int, text: str):
         return ('Send message accept')
     else:
         return ('Send message error')
-    
+
+def send_poll(chat_id: int, question: str, options: list):
+    """
+    Send poll
+
+    Args:
+        chat_id (int): chat id
+        question (str): question
+        options (list): options
+    """
+    URL = f'https://api.telegram.org/bot{TOKEN}/sendPoll'
+    response = requests.post(URL, json={
+        'chat_id': chat_id, 
+        'question': question, 
+        'options': options,
+        'question_parse_mode': "MarkdownV2",
+        'type': 'quiz',
+        'is_anonymous': False,
+        'allows_multiple_answers': False,
+        "correct_option_id": 0
+        })
+
+    return response.json()
+
 last_id = -1
 while True:
     response = requests.get(get_url_reqests('getUpdates'))
@@ -39,8 +62,12 @@ while True:
     update_last = result[-1]
     if last_id!=update_last['update_id']:
         chat_id, update_end = get_text_from_update(update_last)
+        if update_end.get('poll')!=None:
+            options = update_end['poll']['options']
+            question = update_end['poll']['question']
+            send_poll(chat_id=chat_id, options=options, question=question)
         
-        if update_end.get('text')!=None:
+        elif update_end.get('text')!=None:
             get_from_send_message(chat_id, update_end['text'])
         elif update_end.get('voice')!=None:
             file_id = update_end['voice']['file_id']
